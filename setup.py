@@ -1,6 +1,8 @@
 import os, sys
 
-install_requires = []
+install_requires = [
+    'six>=1.9',
+]
 
 if sys.version_info[:2] < (3,4):
     install_requires.append('enum34>=1.0.4')
