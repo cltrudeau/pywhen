@@ -1,7 +1,8 @@
 from datetime import datetime, date, time
 from unittest import TestCase
 
-from utils import ExtendedEnum, When
+from utils import (ExtendedEnum, When, dynamic_load, camelcase_to_underscore,
+    rows_to_columns)
 
 # =============================================================================
 
@@ -145,3 +146,35 @@ class TestWhen(TestCase):
         self.assertEqual(self.only_time, when.time)
         self.assertEqual(self.epoch, when.epoch)
         self.assertEqual(self.mepoch, when.milli_epoch)
+
+
+class TestUtils(TestCase):
+    def test_dynamic_load(self):
+        import os
+        fn = dynamic_load('os.path.abspath')
+        self.assertEqual(os.path.abspath, fn)
+
+    def test_camelcase(self):
+        pairs = [
+            ('one', 'one'),
+            ('one_two', 'oneTwo'),
+            ('one_two', 'OneTwo'),
+        ]
+
+        for pair in pairs:
+            self.assertEqual(pair[0], camelcase_to_underscore(pair[1]))
+
+    def test_rows_to_cols(self):
+        matrix = [ 
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+        ]
+
+        expected = [ 
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+        ]
+
+        self.assertEqual(expected, rows_to_columns(matrix))

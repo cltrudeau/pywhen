@@ -3,7 +3,6 @@ from datetime import datetime, time
 import time as time_mod
 
 from enum import Enum
-import six
 
 # =============================================================================
 
@@ -268,3 +267,48 @@ class When(object):
     def milli_epoch(self):
         """Returns an int of the epoch * 1000 + milliseconds."""
         return self.epoch * 1000 + self._datetime.microsecond * 10
+
+# =============================================================================
+# Utility Methods
+# =============================================================================
+
+def dynamic_load(name):
+    """Equivalent of "from X import Y" statement using dot notation to specify
+    what to import and return.  For example, foo.bar.thing returns the item
+    "thing" in the module "foo.bar" """
+    pieces = name.split('.')
+    item = pieces[-1]
+    mod_name = '.'.join(pieces[:-1])
+
+    mod = __import__(mod_name, globals(), locals(), [item])
+    return getattr(mod, item)
+
+
+def camelcase_to_underscore(text):
+    prev_cap = text[0].isupper()
+    result = [text[0].lower(), ]
+    for letter in text[1:]:
+        if letter.isupper():
+            if not prev_cap:
+                result.append('_')
+
+            result.append(letter.lower())
+            prev_cap = True
+        else:
+            result.append(letter)
+            prev_cap = False
+
+    return ''.join(result)
+
+
+def rows_to_columns(matrix):
+    """Takes a two dimensional array and returns an new one where rows in the
+    first become columns in the second."""
+    num_rows = len(matrix)
+    num_cols = len(matrix[0])
+
+    data = []
+    for i in range(0, num_cols):
+        data.append([matrix[j][i] for j in range(0, num_rows)])
+
+    return data

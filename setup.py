@@ -1,7 +1,7 @@
 import os, sys
 
 install_requires = [
-    'six>=1.9',
+#    'six>=1.9',
 ]
 
 if sys.version_info[:2] < (3,4):
