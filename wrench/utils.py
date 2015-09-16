@@ -359,5 +359,7 @@ def temp_directory():
     Upon exit the directory is removed.
     """
     tempdir = tempfile.mkdtemp()
-    yield tempdir
-    shutil.rmtree(tempdir)
+    try:
+        yield tempdir
+    finally:
+        shutil.rmtree(tempdir)

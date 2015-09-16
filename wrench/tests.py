@@ -194,6 +194,16 @@ class TestContexts(TestCase):
         # verify that the temp directory has been cleaned up
         self.assertFalse(os.path.exists(created_td))
 
+        # -- test failure still cleans up
+        try:
+            with temp_directory() as td:
+                created_td = td
+                raise RuntimeError()
+        except:
+            pass
+
+        self.assertFalse(os.path.exists(created_td))
+
     def test_replace_dir(self):
         # create a temp directory and put something in it which is to be
         # replaced
@@ -221,5 +231,16 @@ class TestContexts(TestCase):
         self.assertFalse(os.path.exists(replace_file))
         self.assertFalse(os.path.exists(created_td))
 
-        # cleanup
+        # -- test failure still cleans up
+        try:
+            with replaced_directory(test_dir) as td:
+                created_td = td
+                raise RuntimeError()
+        except:
+            pass
+
+        self.assertTrue(os.path.exists(orig_file))
+        self.assertFalse(os.path.exists(created_td))
+
+        # -- cleanup testcase
         shutil.rmtree(test_dir)

@@ -17,7 +17,7 @@ LOG_FORMAT_STANDARD = ('%(asctime)s %(name)s.%(funcName)s: '
 
 def configure_file_logger(name, log_dir, log_level=logging.DEBUG):
     """Configures logging to use the :class:`SizeRotatingFileHandler`"""
-    from srothandler import SizeRotatingFileHandler
+    from .srothandler import SizeRotatingFileHandler
 
     root = logging.getLogger()
     root.setLevel(log_level)
