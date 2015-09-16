@@ -15,7 +15,7 @@ long_description = open(readme).read()
 
 SETUP_ARGS = dict(
     name='wrench',
-    version='0.1.0',
+    version='0.1.1',
     description=('Collection of random python tools and utilities '),
     long_description=long_description,
     url='https://github.com/cltrudeau/wrench',
@@ -29,8 +29,9 @@ SETUP_ARGS = dict(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
