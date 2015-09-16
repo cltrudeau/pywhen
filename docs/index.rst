@@ -9,6 +9,7 @@ Contents
    :maxdepth: 2
 
    utils
+   logtools
 
 
 Indices and tables
