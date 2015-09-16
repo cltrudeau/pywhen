@@ -14,4 +14,4 @@ Installation
 Docs
 ====
 
-**Stuff goes here**
+Docs available at: http://python-wrench.readthedocs.org/en/latest/
