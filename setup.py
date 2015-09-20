@@ -1,5 +1,7 @@
 import os, sys
 
+VERSION='0.2.0'
+
 install_requires = [
     'six>=1.9',
     'portalocker>=0.5.4',
@@ -15,7 +17,7 @@ long_description = open(readme).read()
 
 SETUP_ARGS = dict(
     name='wrench',
-    version='0.1.1',
+    version=VERSION,
     description=('Collection of random python tools and utilities '),
     long_description=long_description,
     url='https://github.com/cltrudeau/wrench',

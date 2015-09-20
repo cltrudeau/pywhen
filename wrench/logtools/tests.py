@@ -5,7 +5,21 @@ from unittest import TestCase
 
 from wrench.utils import temp_directory
 from .utils import (configure_file_logger, configure_stdout_logger,
-    default_logging_dict)
+    default_logging_dict, silence_logging)
+
+# =============================================================================
+
+@silence_logging
+class ShouldBeQuiet(object):
+    def logthing(self):
+        logger = logging.getLogger(__name__)
+        logger.debug('this is a message')
+
+
+@silence_logging
+def should_be_quiet():
+    logger = logging.getLogger(__name__)
+    logger.debug('this is a message')
 
 # =============================================================================
 
@@ -53,4 +67,22 @@ class TestLogging(TestCase):
             logfile = os.path.abspath(os.path.join(td, 'debug.log'))
             self.assertTrue(os.path.exists(logfile))
 
+        logging.Logger.manager.loggerDict = config
+
+    def test_silence_decorator(self):
+        config = copy.deepcopy(logging.Logger.manager.loggerDict)
+        saved_stderr = sys.stderr
+        try:
+            out = StringIO()
+            sys.stderr = out
+
+            should_be_quiet()
+            s = ShouldBeQuiet()
+            s.logthing()
+
+            output = out.getvalue().strip()
+            self.assertEqual(0, len(output))
+
+        finally:
+            sys.stderr = saved_stderr
         logging.Logger.manager.loggerDict = config

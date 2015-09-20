@@ -14,7 +14,6 @@ class ColourEnum(ExtendedEnum):
 
 
 class TestEnum(TestCase):
-
     def test_enum(self):
         # test choices()
         choices = ColourEnum.choices()
@@ -180,6 +179,7 @@ class TestUtils(TestCase):
 
         self.assertEqual(expected, rows_to_columns(matrix))
 
+
 class TestContexts(TestCase):
     def test_temp_dir(self):
         created_td = ''
@@ -213,6 +213,16 @@ class TestContexts(TestCase):
 
         with open(orig_file, 'w') as f:
             f.write('foo')
+
+        # test not a dir handling
+        with self.assertRaises(AttributeError):
+            # call context manager by hand as putting it in a "with" will
+            # result in unreachable code which blows our testing coverage
+            rd = replaced_directory(orig_file)
+            rd.__enter__()
+
+        # replace_directory should handle trailing slashes
+        test_dir += '/'
 
         created_td = ''
         with replaced_directory(test_dir) as td:

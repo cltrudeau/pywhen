@@ -1,4 +1,5 @@
 import os, logging
+from functools import wraps
 
 # =============================================================================
 # Constants
@@ -87,3 +88,19 @@ def default_logging_dict(log_dir, handlers=['file'], filename='debug.log'):
     }
 
     return d
+
+# ============================================================================
+# Decorators
+# ============================================================================
+
+def silence_logging(method):
+    """Decorator for a TestCase class or method that silences logging inside
+    what it wraps.
+    """
+    @wraps(method)
+    def wrapper(*args, **kwargs):
+        logging.disable(logging.ERROR)
+        result = method(*args, **kwargs)
+        logging.disable(logging.NOTSET)
+        return result
+    return wrapper
