@@ -2,8 +2,9 @@ import os, shutil, tempfile
 from datetime import datetime, date, time
 from unittest import TestCase
 
-from utils import (ExtendedEnum, When, dynamic_load, camelcase_to_underscore,
-    rows_to_columns, temp_directory, replaced_directory)
+from wrench.utils import (ExtendedEnum, When, dynamic_load, 
+    camelcase_to_underscore, rows_to_columns, temp_directory, 
+    replaced_directory)
 
 # =============================================================================
 

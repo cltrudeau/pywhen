@@ -4,22 +4,28 @@ from six import StringIO
 from unittest import TestCase
 
 from wrench.utils import temp_directory
-from .utils import (configure_file_logger, configure_stdout_logger,
-    default_logging_dict, silence_logging)
+from wrench.logtools.utils import (configure_file_logger, 
+    configure_stdout_logger, default_logging_dict, silence_logging)
 
 # =============================================================================
+
+class GotHere(Exception):
+    pass
+
 
 @silence_logging
 class ShouldBeQuiet(object):
     def logthing(self):
         logger = logging.getLogger(__name__)
         logger.debug('this is a message')
+        raise GotHere()
 
 
 @silence_logging
 def should_be_quiet():
     logger = logging.getLogger(__name__)
     logger.debug('this is a message')
+    raise GotHere()
 
 # =============================================================================
 
@@ -76,9 +82,12 @@ class TestLogging(TestCase):
             out = StringIO()
             sys.stderr = out
 
-            should_be_quiet()
+            with self.assertRaises(GotHere):
+                should_be_quiet()
+
             s = ShouldBeQuiet()
-            s.logthing()
+            with self.assertRaises(GotHere):
+                s.logthing()
 
             output = out.getvalue().strip()
             self.assertEqual(0, len(output))
