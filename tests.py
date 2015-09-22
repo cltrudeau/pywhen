@@ -6,4 +6,11 @@ if len(sys.argv[1:]) > 0:
 else:
     suite = unittest.TestLoader().discover('wrench')
 
+
+#from wrench.waelstow import list_tests
+#for t in list_tests(suite):
+#    print(t)
+#
+#quit()
+
 unittest.TextTestRunner(verbosity=2).run(suite)

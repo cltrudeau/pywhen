@@ -10,6 +10,7 @@ Contents
 
    utils
    logtools
+   waelstow
 
 
 Indices and tables

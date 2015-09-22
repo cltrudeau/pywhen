@@ -1,10 +1,11 @@
 import os, shutil, tempfile
 from datetime import datetime, date, time
-from unittest import TestCase
+from unittest import TestCase, TestSuite, defaultTestLoader
 
 from wrench.utils import (ExtendedEnum, When, dynamic_load, 
     camelcase_to_underscore, rows_to_columns, temp_directory, 
     replaced_directory)
+from wrench.waelstow import list_tests, find_shortcut_tests
 
 # =============================================================================
 
@@ -255,3 +256,83 @@ class TestContexts(TestCase):
 
         # -- cleanup testcase
         shutil.rmtree(test_dir)
+
+
+class WaelstowTest(TestCase):
+    def setUp(self):
+        class ATestCase(TestCase):
+            def test_common(self):
+                pass
+
+            def test_a(self):
+                pass
+
+        class BTestCase(TestCase):
+            def test_common(self):
+                pass
+
+            def test_b(self):
+                pass
+
+        class CTestCase(TestCase):
+            def test_common(self):
+                pass
+
+        # mock up what python.unittests does for failures make sure it is
+        # ignored properly
+        class ModuleImportFailure(TestCase):
+            pass
+
+        self.suite_a = defaultTestLoader.loadTestsFromTestCase(ATestCase)
+        self.suite_b = defaultTestLoader.loadTestsFromTestCase(BTestCase)
+        self.suite_c = defaultTestLoader.loadTestsFromTestCase(CTestCase)
+
+        group = TestSuite([self.suite_a, self.suite_b])
+        self.suite = TestSuite([self.suite_c, group, ModuleImportFailure()])
+
+    def assert_test_strings(self, expected, tests):
+        names = [str(test) for test in tests]
+        self.assertEqual(set(expected), set(names))
+
+    def test_list_tests(self):
+        expected = [
+            'test_common (tests.ATestCase)',
+            'test_a (tests.ATestCase)',
+            'test_common (tests.BTestCase)',
+            'test_b (tests.BTestCase)',
+            'test_common (tests.CTestCase)',
+        ]
+
+        tests = list(list_tests(self.suite))
+        self.assert_test_strings(expected, tests)
+
+    def test_find_shortcuts(self):
+        expected = [
+            'test_common (tests.ATestCase)',
+            'test_common (tests.BTestCase)',
+            'test_common (tests.CTestCase)',
+        ]
+
+        tests = find_shortcut_tests(self.suite, ['=common'])
+        self.assert_test_strings(expected, tests)
+
+        expected = [
+            'test_a (tests.ATestCase)',
+            'test_b (tests.BTestCase)',
+        ]
+
+        tests = find_shortcut_tests(self.suite, ['=_a', '=_b'])
+        self.assert_test_strings(expected, tests)
+
+        expected = [
+            'test_a (tests.ATestCase)',
+            'test_common (tests.ATestCase)',
+        ]
+
+        tests = find_shortcut_tests(self.suite, ['=ATest'])
+        self.assert_test_strings(expected, tests)
+
+    def test_misc(self):
+        # misc stuff to hit our 100% coverage 
+        for t in list_tests(self.suite):
+            t.run()
