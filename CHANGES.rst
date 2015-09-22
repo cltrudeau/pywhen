@@ -1,3 +1,8 @@
+0.3.1
+=====
+
+- restructured so tests could be called via setup.py
+
 0.3
 ===
 

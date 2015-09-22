@@ -1,6 +1,6 @@
 import os, sys
 
-VERSION='0.3.0'
+VERSION='0.3.1'
 
 install_requires = [
     'six>=1.9',
