@@ -163,7 +163,8 @@ class SizeRotatingFileHandler(BaseRotatingHandler):
         Close log stream and stream_lock. """
         try:
             self._close()
-            if not self.stream_lock.closed:
+            if hasattr(self.stream_lock, 'closed') and \
+                    not self.stream_lock.closed:
                 self.stream_lock.close()
         finally:
             self.stream_lock = None

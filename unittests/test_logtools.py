@@ -30,9 +30,23 @@ def should_be_quiet():
 # =============================================================================
 
 class TestLogging(TestCase):
-    def test_config_file_logger(self):
-        config = copy.deepcopy(logging.Logger.manager.loggerDict)
+    def _reset_logging(self):
+        # put the logging into a known state
+        root = logging.getLogger()
+        if root.handlers:
+            for handler in root.handlers:
+                handler.close()
+                root.removeHandler(handler)
 
+        logging.basicConfig(format='%(message)s', level=logging.DEBUG)
+
+    def setUp(self):
+        self._reset_logging()
+
+    def tearDown(self):
+        self._reset_logging()
+
+    def test_config_file_logger(self):
         with temp_directory() as td:
             configure_file_logger('debug', td)
             logger = logging.getLogger(__name__)
@@ -41,10 +55,7 @@ class TestLogging(TestCase):
             logfile = os.path.abspath(os.path.join(td, 'debug.log'))
             self.assertTrue(os.path.exists(logfile))
 
-        logging.Logger.manager.loggerDict = config
-
     def test_config_stdout_logger(self):
-        config = copy.deepcopy(logging.Logger.manager.loggerDict)
         saved_stderr = sys.stderr
         try:
             out = StringIO()
@@ -58,11 +69,8 @@ class TestLogging(TestCase):
 
         finally:
             sys.stderr = saved_stderr
-        logging.Logger.manager.loggerDict = config
 
     def test_default_logging_dict(self):
-        config = copy.deepcopy(logging.Logger.manager.loggerDict)
-
         with temp_directory() as td:
             d = default_logging_dict(td)
             logging.config.dictConfig(d)
@@ -73,10 +81,7 @@ class TestLogging(TestCase):
             logfile = os.path.abspath(os.path.join(td, 'debug.log'))
             self.assertTrue(os.path.exists(logfile))
 
-        logging.Logger.manager.loggerDict = config
-
     def test_silence_decorator(self):
-        config = copy.deepcopy(logging.Logger.manager.loggerDict)
         saved_stderr = sys.stderr
         try:
             out = StringIO()
@@ -94,4 +99,3 @@ class TestLogging(TestCase):
 
         finally:
             sys.stderr = saved_stderr
-        logging.Logger.manager.loggerDict = config

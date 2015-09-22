@@ -42,7 +42,7 @@ class WaelstowTest(TestCase):
         self.assertEqual(set(expected_names), set(names))
 
     def test_list_tests(self):
-        class ModuleImportFailure(TestCase):
+        class ModuleImportFailure(TestSuite):
             pass
 
         # get out test suite and add in our mock of python's failure module to
