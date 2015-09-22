@@ -1,3 +1,8 @@
+0.3
+===
+
+- added waelstow utilities for doing python unittests manipulation
+
 0.2
 ===
 
