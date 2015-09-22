@@ -1,5 +1,5 @@
 # wrench.waelstow.py
-from unittest import TestCase
+from unittest import TestCase, TestSuite, TestLoader
 
 def list_tests(suites):
     """Takes a list of suites and returns an iterable of all the tests in
@@ -70,3 +70,41 @@ def find_shortcut_tests(suites, shortcut_labels):
                 results.append(test)
 
     return results
+
+
+def discover_tests(start_dir, labels=[], pattern='test*.py'):
+    """Discovers tests in a given module filtered by labels.  Supports
+    short-cut labels as defined in :func:`find_shortcut_labels`.
+
+    :param start_dir:
+        Name of directory to begin looking in
+    :param labels:
+        Optional list of labels to filter the tests by
+    :returns:
+        :class:`TestSuite` with tests
+    """
+    shortcut_labels = []
+    full_labels = []
+    for label in labels:
+        if label.startswith('='):
+            shortcut_labels.append(label)
+        else:
+            full_labels.append(label)
+
+    if not full_labels and not shortcut_labels:
+        # no labels, get everything
+        return TestLoader().discover(start_dir, pattern=pattern)
+
+    shortcut_tests = []
+    if shortcut_labels:
+        suite = TestLoader().discover(start_dir, pattern=pattern)
+        shortcut_tests = find_shortcut_tests(suite, shortcut_labels)
+
+    if full_labels:
+        suite = TestLoader().loadTestsFromNames(full_labels)
+        suite.addTests(shortcut_tests)
+    else:
+        # only have shortcut labels
+        suite = TestSuite(shortcut_tests)
+
+    return suite

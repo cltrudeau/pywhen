@@ -38,6 +38,7 @@ SETUP_ARGS = dict(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     keywords='tools',
+    test_suite='load_tests.get_suite',
     install_requires=install_requires,
 )
 
