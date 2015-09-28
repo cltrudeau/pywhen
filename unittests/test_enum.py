@@ -35,3 +35,10 @@ class TestEnum(TestCase):
         self.assertIn('red', names)
         self.assertIn('blue', names)
         self.assertIn('green', names)
+
+        # test items()
+        items = list(ColourEnum.items())
+        self.assertEqual(len(items), 3)
+        self.assertIn(('red', 'r'), items)
+        self.assertIn(('blue', 'b'), items)
+        self.assertIn(('green', 'g'), items)

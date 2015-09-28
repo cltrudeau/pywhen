@@ -36,6 +36,17 @@ class ExtendedEnum(Enum):
         return result
 
     @classmethod
+    def items(cls):
+        """Returns a iterable of name/value pairs for the items in the
+        ``Enum``.
+
+        :returns:
+            Iterable of name/value tuples
+        """
+        for item in cls:
+            yield (item.name, item.value)
+
+    @classmethod
     def count(cls):
         """Returns the number of items in the enumeration."""
         return len(cls.__members__)
