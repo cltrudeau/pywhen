@@ -1,5 +1,10 @@
-0.4.0
-=====
+0.5
+===
+
+* added parse_link utility for parsing HTML anchor tags
+
+0.4
+===
 
 * added ExtendedEnum.items() method
 

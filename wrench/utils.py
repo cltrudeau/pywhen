@@ -328,6 +328,8 @@ def rows_to_columns(matrix):
 
 
 class AnchorParser(HTMLParser):
+    ParsedLink = namedtuple('ParsedLink', ['url', 'text'])
+
     def __init__(self, *args, **kwargs):
         super(AnchorParser, self).__init__(*args, **kwargs)
         self.url = ''
@@ -343,9 +345,6 @@ class AnchorParser(HTMLParser):
         self.text = data
 
 
-ParsedLink = namedtuple('ParsedLink', ['url', 'text'])
-
-
 def parse_link(html):
     """Parses an HTML anchor tag, returning the href and content text.
 
@@ -357,12 +356,13 @@ def parse_link(html):
     Example:
 
     .. code-block:: python
+
         >>> parse_link('<a href="/foo/bar.html">Foo</a>')
         ParsedLink('/foo/bar.html', 'Foo')
     """
     parser = AnchorParser()
     parser.feed(html)
-    return ParsedLink(parser.url, parser.text)
+    return parser.ParsedLink(parser.url, parser.text)
 
 # =============================================================================
 # Contexts
