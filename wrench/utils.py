@@ -1,8 +1,10 @@
 import contextlib, os, shutil, sys, tempfile
+from collections import namedtuple
 from datetime import datetime, time
 import time as time_mod
 
 from enum import Enum
+from six.moves.html_parser import HTMLParser
 
 # =============================================================================
 
@@ -323,6 +325,44 @@ def rows_to_columns(matrix):
         data.append([matrix[j][i] for j in range(0, num_rows)])
 
     return data
+
+
+class AnchorParser(HTMLParser):
+    def __init__(self, *args, **kwargs):
+        super(AnchorParser, self).__init__(*args, **kwargs)
+        self.url = ''
+        self.text = ''
+
+    def handle_starttag(self, tag, attrs):
+        for attr in attrs:
+            if attr[0] == 'href':
+                self.url = attr[1]
+                break
+
+    def handle_data(self, data):
+        self.text = data
+
+
+ParsedLink = namedtuple('ParsedLink', ['url', 'text'])
+
+
+def parse_link(html):
+    """Parses an HTML anchor tag, returning the href and content text.
+
+    :param html:
+        Snippet of html to parse
+    :returns:
+        namedtuple('ParsedLink', ['url', 'text'])
+
+    Example:
+
+    .. code-block:: python
+        >>> parse_link('<a href="/foo/bar.html">Foo</a>')
+        ParsedLink('/foo/bar.html', 'Foo')
+    """
+    parser = AnchorParser()
+    parser.feed(html)
+    return ParsedLink(parser.url, parser.text)
 
 # =============================================================================
 # Contexts

@@ -1,6 +1,7 @@
 from unittest import TestCase
 
-from wrench.utils import dynamic_load, camelcase_to_underscore, rows_to_columns
+from wrench.utils import (dynamic_load, camelcase_to_underscore, 
+    rows_to_columns, parse_link)
 
 # =============================================================================
 
@@ -34,3 +35,12 @@ class TestUtils(TestCase):
         ]
 
         self.assertEqual(expected, rows_to_columns(matrix))
+
+    def test_parse_link(self):
+        url, text = parse_link('')
+        self.assertEqual('', url)
+        self.assertEqual('', text)
+
+        url, text = parse_link('<a href="/foo/bar.html">Stuff</a>')
+        self.assertEqual('/foo/bar.html', url)
+        self.assertEqual('Stuff', text)
