@@ -1,3 +1,9 @@
+0.5.1
+=====
+
+* fix py2.7 specific bug where AnchorParser wasn't initializing properly due
+    to old style classes
+
 0.5
 ===
 

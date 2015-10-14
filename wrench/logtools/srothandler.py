@@ -119,7 +119,11 @@ class SizeRotatingFileHandler(BaseRotatingHandler):
         """ Acquire thread and file locks.  Re-opening log for 'degraded' mode.
         """
         # handle thread lock
-        Handler.acquire(self)
+        if Handler:
+            # under some tests Handler ends up being null due to instantiation
+            # order
+            Handler.acquire(self)
+
         # Issue a file lock.  (This is inefficient for multiple active threads
         # within a single process. But if you're worried about high-performance,
         # you probably aren't using this log handler.)
@@ -156,7 +160,8 @@ class SizeRotatingFileHandler(BaseRotatingHandler):
                 self.handleError(NullLogRecord())
             finally:
                 # release thread lock
-                Handler.release(self)
+                if Handler:
+                    Handler.release(self)
     
     def close(self):
         """

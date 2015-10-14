@@ -331,7 +331,13 @@ class AnchorParser(HTMLParser):
     ParsedLink = namedtuple('ParsedLink', ['url', 'text'])
 
     def __init__(self, *args, **kwargs):
-        super(AnchorParser, self).__init__(*args, **kwargs)
+        if sys.version_info > (3,):
+            super(AnchorParser, self).__init__(*args, **kwargs)
+        else:
+            # HTMLParser is still an old style object and so super doesn't
+            # work
+            HTMLParser.__init__(self, *args, **kwargs)
+
         self.url = ''
         self.text = ''
 
