@@ -420,3 +420,16 @@ def temp_directory():
         yield tempdir
     finally:
         shutil.rmtree(tempdir)
+
+
+@contextlib.contextmanager
+def temp_file():
+    """This ``Context`` creates a temporary file which is readable and
+    writable by the current user and yields its path.  One the ``Context``
+    exits, the file is removed.
+    """
+    _, filename = tempfile.mkstemp()
+    try:
+        yield filename
+    finally:
+        os.remove(filename)

@@ -1,7 +1,7 @@
 import os, shutil, tempfile
 from unittest import TestCase
 
-from wrench.utils import temp_directory, replaced_directory
+from wrench.utils import temp_directory, replaced_directory, temp_file
 
 # =============================================================================
 
@@ -79,3 +79,9 @@ class TestContexts(TestCase):
 
         # -- cleanup testcase
         shutil.rmtree(test_dir)
+
+    def test_temp_file(self):
+        with temp_file() as filename:
+            self.assertTrue(os.path.exists(filename))
+
+        self.assertFalse(os.path.exists(filename))
