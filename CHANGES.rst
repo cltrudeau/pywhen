@@ -1,3 +1,9 @@
+0.6
+===
+
+* added util temp_file() Context that wraps the creation and removal of temp
+files
+
 0.5.1
 =====
 
