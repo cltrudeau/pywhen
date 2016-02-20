@@ -3,7 +3,7 @@ import logging.config
 from six import StringIO
 from unittest import TestCase
 
-from wrench.utils import temp_directory
+from wrench.contexts import temp_directory
 from wrench.logtools.utils import (configure_file_logger, 
     configure_stdout_logger, default_logging_dict, silence_logging)
 

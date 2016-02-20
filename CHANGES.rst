@@ -1,8 +1,15 @@
+0.7
+===
+
+* moved all Context Managers into their own module "contexts"
+* added capture_stdout() Context Manager that captures STDOUT into a
+StringIO object
+
 0.6
 ===
 
-* added util temp_file() Context that wraps the creation and removal of temp
-files
+* added util temp_file() Context Manager that wraps the creation and removal
+of temp files
 
 0.5.1
 =====

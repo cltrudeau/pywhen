@@ -8,8 +8,9 @@ Contents
 .. toctree::
    :maxdepth: 2
 
-   utils
+   contexts
    logtools
+   utils
    waelstow
 
 

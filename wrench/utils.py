@@ -1,4 +1,4 @@
-import contextlib, os, shutil, sys, tempfile
+import sys
 from collections import namedtuple
 from datetime import datetime, time
 import time as time_mod
@@ -333,7 +333,7 @@ class AnchorParser(HTMLParser):
     def __init__(self, *args, **kwargs):
         if sys.version_info > (3,):
             super(AnchorParser, self).__init__(*args, **kwargs)
-        else:
+        else:   # pragma: no cover
             # HTMLParser is still an old style object and so super doesn't
             # work
             HTMLParser.__init__(self, *args, **kwargs)
@@ -369,67 +369,3 @@ def parse_link(html):
     parser = AnchorParser()
     parser.feed(html)
     return parser.ParsedLink(parser.url, parser.text)
-
-# =============================================================================
-# Contexts
-# =============================================================================
-
-@contextlib.contextmanager
-def replaced_directory(dirname):
-    """This ``Context`` is used to move the contents of a directory elsewhere
-    temporarily and put them back upon exit.  This allows testing code to use
-    the same file directories as normal code without fear of damage.
-
-    The name of the temporary directory which contains your files is yielded.
-
-    :param dirname:
-        Path name of the directory to be replaced.
-    """
-    if dirname[-1] == '/':
-        dirname = dirname[:-1]
-
-    full_path = os.path.abspath(dirname)
-    if not os.path.isdir(full_path):
-        raise AttributeError('dir_name must be a directory')
-
-    base, name = os.path.split(full_path)
-
-    # create a temporary directory, move provided dir into it and recreate the
-    # directory for the user
-    tempdir = tempfile.mkdtemp()
-    shutil.move(full_path, tempdir)
-    os.mkdir(full_path)
-    try:
-        yield tempdir
-
-    finally:
-        # done context, undo everything
-        shutil.rmtree(full_path)
-        moved = os.path.join(tempdir, name)
-        shutil.move(moved, base)
-        shutil.rmtree(tempdir)
-
-
-@contextlib.contextmanager
-def temp_directory():
-    """This ``Context`` creates a temporary directory and yields its path.
-    Upon exit the directory is removed.
-    """
-    tempdir = tempfile.mkdtemp()
-    try:
-        yield tempdir
-    finally:
-        shutil.rmtree(tempdir)
-
-
-@contextlib.contextmanager
-def temp_file():
-    """This ``Context`` creates a temporary file which is readable and
-    writable by the current user and yields its path.  One the ``Context``
-    exits, the file is removed.
-    """
-    _, filename = tempfile.mkstemp()
-    try:
-        yield filename
-    finally:
-        os.remove(filename)

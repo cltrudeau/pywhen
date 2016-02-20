@@ -1,7 +1,8 @@
 import os, shutil, tempfile
 from unittest import TestCase
 
-from wrench.utils import temp_directory, replaced_directory, temp_file
+from wrench.contexts import (temp_directory, replaced_directory, temp_file,
+    capture_stdout)
 
 # =============================================================================
 
@@ -85,3 +86,9 @@ class TestContexts(TestCase):
             self.assertTrue(os.path.exists(filename))
 
         self.assertFalse(os.path.exists(filename))
+
+    def test_capture_stdout(self):
+        with capture_stdout() as capture:
+            print('foo')
+
+        self.assertEqual(capture.getvalue(), 'foo\n')
