@@ -1,4 +1,4 @@
-import sys
+import sys, json
 from collections import namedtuple
 from datetime import datetime, time
 import time as time_mod
@@ -369,3 +369,12 @@ def parse_link(html):
     parser = AnchorParser()
     parser.feed(html)
     return parser.ParsedLink(parser.url, parser.text)
+
+
+def pprint(data):
+    """Alternative to `pprint.PrettyPrinter()` that uses `json.dumps()` for
+    sorting and displaying data.  
+
+    :param data: item to print to STDOUT.  The item must be json serializable!
+    """
+    print(json.dumps(data, sort_keys=True, indent=4, separators=(',', ': ')))

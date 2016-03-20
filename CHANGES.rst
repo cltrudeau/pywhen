@@ -1,3 +1,8 @@
+0.8
+===
+
+* Added pprint() to utils
+
 0.7
 ===
 
