@@ -11,7 +11,8 @@ Installation
 
     $ pip install wrench
 
-Docs
-====
+Docs & Source
+=============
 
-Docs available at: http://python-wrench.readthedocs.org/en/latest/
+Docs: http://python-wrench.readthedocs.io/en/latest/
+Source: https://github.com/cltrudeau/wrench
