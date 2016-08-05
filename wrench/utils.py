@@ -338,21 +338,32 @@ class AnchorParser(HTMLParser):
             # work
             HTMLParser.__init__(self, *args, **kwargs)
 
+        self.capture = 0
         self.url = ''
         self.text = ''
 
     def handle_starttag(self, tag, attrs):
-        for attr in attrs:
-            if attr[0] == 'href':
-                self.url = attr[1]
-                break
+        if tag.lower() == 'a':
+            self.capture += 1
+
+            if self.capture == 1:
+                for attr in attrs:
+                    if attr[0] == 'href':
+                        self.url = attr[1]
+                        break
+
+    def handle_endtag(self, tag):
+        if tag.lower() == 'a':
+            self.capture += 1
 
     def handle_data(self, data):
-        self.text = data
+        if self.capture == 1:
+            self.text = data
 
 
 def parse_link(html):
-    """Parses an HTML anchor tag, returning the href and content text.
+    """Parses an HTML anchor tag, returning the href and content text.  Any
+    content before or after the anchor tag pair is ignored.
 
     :param html:
         Snippet of html to parse
@@ -363,7 +374,7 @@ def parse_link(html):
 
     .. code-block:: python
 
-        >>> parse_link('<a href="/foo/bar.html">Foo</a>')
+        >>> parse_link('things <a href="/foo/bar.html">Foo</a> stuff')
         ParsedLink('/foo/bar.html', 'Foo')
     """
     parser = AnchorParser()

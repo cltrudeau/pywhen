@@ -98,14 +98,6 @@ def silence_logging(method):
     particularly useful when testing if a test method is supposed to issue an
     error message which is confusing that the error shows for a successful
     test.
-
-    .. warning::
-
-        Normally you can use function decorators to wrap a class, but if you
-        wrap a :class:`TestCase` class what is returned is a function which
-        means it won't be found by the test discovery process.  Wrap the
-        individual test case methods, or alter logging in the
-        :class:`TestCase.setUp` and :class`TestCase.tearDown` methods.
     """
     @wraps(method)
     def wrapper(*args, **kwargs):

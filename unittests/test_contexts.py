@@ -1,8 +1,8 @@
-import os, shutil, tempfile
+import os, shutil, tempfile, sys
 from unittest import TestCase
 
 from wrench.contexts import (temp_directory, replaced_directory, temp_file,
-    capture_stdout)
+    capture_stdout, capture_stderr)
 
 # =============================================================================
 
@@ -89,6 +89,12 @@ class TestContexts(TestCase):
 
     def test_capture_stdout(self):
         with capture_stdout() as capture:
-            print('foo')
+            sys.stdout.write('foo\n')
+
+        self.assertEqual(capture.getvalue(), 'foo\n')
+
+    def test_capture_stderr(self):
+        with capture_stderr() as capture:
+            sys.stderr.write('foo\n')
 
         self.assertEqual(capture.getvalue(), 'foo\n')

@@ -1,10 +1,10 @@
 import os, sys
 
-VERSION='0.8.0'
+VERSION='0.9'
 
 install_requires = [
-    'six>=1.9',
-    'portalocker>=0.5.4',
+    'six>=1.10',
+    'portalocker>=0.5.7',
 ]
 
 if sys.version_info[:2] < (3,4):

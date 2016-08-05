@@ -1,3 +1,13 @@
+0.9
+===
+
+* changes to make python 3.5 compatible
+    * html.parser works differently in 3.4 & 3.5, made functions that use it 
+    handle things consistently
+* fixed bugs in logtools & improved testing to catch cases that weren't being
+caught before
+* added contexts.capture_stderr()
+
 0.8
 ===
 

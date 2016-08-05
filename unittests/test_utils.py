@@ -41,7 +41,7 @@ class TestUtils(TestCase):
         self.assertEqual('', url)
         self.assertEqual('', text)
 
-        url, text = parse_link('<a href="/foo/bar.html">Stuff</a>')
+        url, text = parse_link('before <a href="/foo/bar.html">Stuff</a> after')
         self.assertEqual('/foo/bar.html', url)
         self.assertEqual('Stuff', text)
 

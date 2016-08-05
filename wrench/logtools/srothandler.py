@@ -173,7 +173,8 @@ class SizeRotatingFileHandler(BaseRotatingHandler):
                 self.stream_lock.close()
         finally:
             self.stream_lock = None
-            Handler.close(self)
+            if Handler:
+                Handler.close(self)
     
     def _degrade(self, degrade, msg, *args):
         """ Set degrade mode or not.  Ignore msg. """
