@@ -1,6 +1,6 @@
 import os, sys
 
-VERSION='0.9'
+from wrench import __version__
 
 install_requires = [
     'six>=1.10',
@@ -17,7 +17,7 @@ long_description = open(readme).read()
 
 SETUP_ARGS = dict(
     name='wrench',
-    version=VERSION,
+    version=__version__,
     description=('Collection of random python tools and utilities '),
     long_description=long_description,
     url='https://github.com/cltrudeau/wrench',

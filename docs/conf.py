@@ -59,10 +59,12 @@ author = 'Christopher Trudeau'
 #
 # The short X.Y version.
 import imp
-mod = imp.load_source('wrenchsetup', '../setup.py')
+mod = imp.load_source('wrench', '../wrench/__init__.py')
+
+version = mod.__version__
 
 #version = mod.VERSION
-version = mod.SETUP_ARGS['version']
+#version = mod.SETUP_ARGS['version']
 # The full version, including alpha/beta/rc tags.
 release = version
 
