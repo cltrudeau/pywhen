@@ -1,7 +1,7 @@
 #!/bin/bash
 
 find . -name "*.pyc" -exec rm {} \;
-coverage run -p --source=unittests,wrench ./load_tests.py $@
+coverage run -p --source=unittests,when ./load_tests.py $@
 if [ "$?" = "0" ]; then
     coverage combine
     echo -e "\n\n================================================"

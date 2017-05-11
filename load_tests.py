@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import unittest, sys
-from wrench.waelstow import discover_tests, list_tests
+from waelstow import discover_tests, list_tests
 
 def get_suite(labels=[]):
     return discover_tests('unittests', labels)

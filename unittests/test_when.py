@@ -1,7 +1,7 @@
 from datetime import datetime, date, time
 from unittest import TestCase
 
-from wrench.utils import When
+from when import When
 
 # =============================================================================
 

@@ -1,24 +1,24 @@
-wrench
-******
+when
+****
 
-Another tool for your python toolset.  General odds and ends that kept coming
-up in projects.
+A wrapper library for date/time conversion.  Takes many of the standard ISO
+date formats as strings and creates an internally consistent datetime object.
 
 Installation
 ============
 
 .. code-block:: bash
 
-    $ pip install wrench
+    $ pip install pywhen
 
 Supports
 ========
 
-Python wrench has been tested with Python 2.7, 3.4, and 3.5
+pywhen has been tested with Python 2.7, 3.5, and 3.6
 
 Docs & Source
 =============
 
-Docs: http://python-wrench.readthedocs.io/en/latest/
+Docs: http://pywhen.readthedocs.io/en/latest/
 
-Source: https://github.com/cltrudeau/wrench
+Source: https://github.com/cltrudeau/pywhen

@@ -1,67 +1,14 @@
-import sys, json
-from collections import namedtuple
+__version__ = '0.10.0'
+
+import sys
 from datetime import datetime, time
 import time as time_mod
-
-from enum import Enum
-from six.moves.html_parser import HTMLParser
 
 # =============================================================================
 
 # compensate for long disappearing in py3
 if sys.version_info > (3,):
     long = int
-
-# =============================================================================
-# Extended Enum 
-# =============================================================================
-
-class ExtendedEnum(Enum):
-    """Extends ``Enum`` (either native or enum34.enum depending on python
-    version) and adds some features.
-    """
-
-    @classmethod
-    def choices(cls):
-        """Returns a "choices" list of tuples.  Each member of the list is one
-        of the possible items in the ``Enum``, with the first item in the pair
-        being the value and the second the name.  This is compatible with
-        django's choices attribute in fields.
-
-        :returns:
-            List of tuples
-        """
-        result = []
-        for name, member in cls.__members__.items():
-            result.append((member.value, name))
-
-        return result
-
-    @classmethod
-    def items(cls):
-        """Returns a iterable of name/value pairs for the items in the
-        ``Enum``.
-
-        :returns:
-            Iterable of name/value tuples
-        """
-        for item in cls:
-            yield (item.name, item.value)
-
-    @classmethod
-    def count(cls):
-        """Returns the number of items in the enumeration."""
-        return len(cls.__members__)
-
-    @classmethod
-    def values(cls):
-        """Returns a list of the values of the items in the enumeration."""
-        return [e.value for e in list(cls)]
-
-    @classmethod
-    def names(cls):
-        """Returns a list of the names of the items in the enumeration."""
-        return [e.name for e in list(cls)]
 
 # =============================================================================
 # Date Conversion
@@ -280,112 +227,3 @@ class When(object):
     def milli_epoch(self):
         """Returns an int of the epoch * 1000 + milliseconds."""
         return self.epoch * 1000 + self._datetime.microsecond * 10
-
-# =============================================================================
-# Utility Methods
-# =============================================================================
-
-def dynamic_load(name):
-    """Equivalent of "from X import Y" statement using dot notation to specify
-    what to import and return.  For example, foo.bar.thing returns the item
-    "thing" in the module "foo.bar" """
-    pieces = name.split('.')
-    item = pieces[-1]
-    mod_name = '.'.join(pieces[:-1])
-
-    mod = __import__(mod_name, globals(), locals(), [item])
-    return getattr(mod, item)
-
-
-def camelcase_to_underscore(text):
-    prev_cap = text[0].isupper()
-    result = [text[0].lower(), ]
-    for letter in text[1:]:
-        if letter.isupper():
-            if not prev_cap:
-                result.append('_')
-
-            result.append(letter.lower())
-            prev_cap = True
-        else:
-            result.append(letter)
-            prev_cap = False
-
-    return ''.join(result)
-
-
-def rows_to_columns(matrix):
-    """Takes a two dimensional array and returns an new one where rows in the
-    first become columns in the second."""
-    num_rows = len(matrix)
-    num_cols = len(matrix[0])
-
-    data = []
-    for i in range(0, num_cols):
-        data.append([matrix[j][i] for j in range(0, num_rows)])
-
-    return data
-
-
-class AnchorParser(HTMLParser):
-    ParsedLink = namedtuple('ParsedLink', ['url', 'text'])
-
-    def __init__(self, *args, **kwargs):
-        if sys.version_info > (3,):
-            super(AnchorParser, self).__init__(*args, **kwargs)
-        else:   # pragma: no cover
-            # HTMLParser is still an old style object and so super doesn't
-            # work
-            HTMLParser.__init__(self, *args, **kwargs)
-
-        self.capture = 0
-        self.url = ''
-        self.text = ''
-
-    def handle_starttag(self, tag, attrs):
-        if tag.lower() == 'a':
-            self.capture += 1
-
-            if self.capture == 1:
-                for attr in attrs:
-                    if attr[0] == 'href':
-                        self.url = attr[1]
-                        break
-
-    def handle_endtag(self, tag):
-        if tag.lower() == 'a':
-            self.capture += 1
-
-    def handle_data(self, data):
-        if self.capture == 1:
-            self.text = data
-
-
-def parse_link(html):
-    """Parses an HTML anchor tag, returning the href and content text.  Any
-    content before or after the anchor tag pair is ignored.
-
-    :param html:
-        Snippet of html to parse
-    :returns:
-        namedtuple('ParsedLink', ['url', 'text'])
-
-    Example:
-
-    .. code-block:: python
-
-        >>> parse_link('things <a href="/foo/bar.html">Foo</a> stuff')
-        ParsedLink('/foo/bar.html', 'Foo')
-    """
-    parser = AnchorParser()
-    parser.feed(html)
-    return parser.ParsedLink(parser.url, parser.text)
-
-
-def pprint(data):
-    """Alternative to `pprint.PrettyPrinter()` that uses `json.dumps()` for
-    sorting and displaying data.  
-
-    :param data: item to print to STDOUT.  The item must be json serializable!
-    """
-    print(json.dumps(data, sort_keys=True, indent=4, separators=(',', ': ')))
