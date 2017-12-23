@@ -6,7 +6,7 @@ readme = os.path.join(os.path.dirname(__file__), 'README.rst')
 long_description = open(readme).read()
 
 SETUP_ARGS = dict(
-    name='wrench',
+    name='pywhen',
     version=__version__,
     description=('Collection of random python tools and utilities '),
     long_description=long_description,
@@ -32,7 +32,7 @@ SETUP_ARGS = dict(
     py_modules = ['when',],
     install_requires=[],
     tests_require=[
-        'waelstow==0.10.0',
+        'waelstow==0.10.1',
     ],
 )
 

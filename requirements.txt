@@ -7,4 +7,4 @@ Sphinx==1.5.5
 sphinx-rtd-theme==0.2.4
 tox==2.7.0
 twine==1.8.1
-waelstow==0.10.0
+waelstow==0.10.1
