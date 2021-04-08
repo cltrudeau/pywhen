@@ -1,10 +1,10 @@
 # These requirements are for running tests and the sample_site, the library 
 # itself only needs a subset, see setup.py for that list
-coverage==4.4
-pudb==2017.1.2
-pyflakes==1.5.0
-Sphinx==1.5.5
-sphinx-rtd-theme==0.2.4
-tox==2.7.0
-twine==1.8.1
-waelstow==0.10.1
+coverage==5.5
+pudb==2020.1
+pyflakes==2.3.1
+Sphinx==3.5.3
+sphinx-rtd-theme==0.5.2
+tox==3.23.0
+twine==3.4.1
+waelstow==0.10.2

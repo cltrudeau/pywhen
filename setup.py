@@ -21,9 +21,10 @@ SETUP_ARGS = dict(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
@@ -32,7 +33,7 @@ SETUP_ARGS = dict(
     py_modules = ['when',],
     install_requires=[],
     tests_require=[
-        'waelstow==0.10.1',
+        'waelstow==0.10.2',
     ],
 )
 

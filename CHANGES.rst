@@ -1,3 +1,10 @@
+0.11
+====
+
+* Added Py 3.7, 3.8, 3.9 testing
+* dropped Py2.7, Py3.5 testing
+
+
 0.10
 ====
 
