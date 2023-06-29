@@ -14,10 +14,11 @@ Installation
 Supports
 ========
 
-pywhen has been tested with Python 3.6, 3.7, 3.8, 3.9, and 3.10
+pywhen has been tested with Python 3.8-3.11
 
-Previously it was tested with Python 2.7, not much has changed since then and
-it should still work, but it isn't part of the automatic tests anymore.
+Previously it was tested with Python 2.7, 3.6-3.7. Not much has changed since
+then and it should still work, but it isn't part of the automatic tests
+anymore.
 
 Docs & Source
 =============

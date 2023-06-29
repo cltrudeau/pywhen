@@ -1,4 +1,4 @@
-# These requirements are for running tests and the sample_site, the library 
+# These requirements are for running tests and the sample_site, the library
 # itself only needs a subset, see setup.py for that list
 coverage==5.5
 pudb==2020.1
